@@ -2,14 +2,23 @@
 <html>
 <head>
   <title>DAppsブログ</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
   <script src="./app.js"></script>
 </head>
 <body>
+  <br><button id="" class="btn-list">一覧</button></br>
   <br><label for="title">タイトル:</label><input type="text" id="title" placeholder="今日の出来事"></input>
-  <br><label for="body">本文:</label><input type="text" id="body" placeholder="今日は非中央集権的な1日だった。"></input>
+  <br><label for="body">本文:</label><input type="textarea" id="body" placeholder="今日は非中央集権的な1日だった。"></input>
   <br><br><button id="send" onclick="App.sendBlog()">公開</button>
   <br><br>
   <span id="status"></span>
+  <br><br>
+  <span id="blogIdElement"></span>
+  <span id="writerElement"></span>
+  <br><br>
+  <span id="titleElement"></span>
+  <br><br>
+  <span id="bodyElement"></span>
 </body>
 </html>

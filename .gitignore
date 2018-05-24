@@ -1,4 +1,7 @@
 .babelrc
 .eslintignore
 .eslintrc
+*.swp
 node_modules/*
+.DS_store
+

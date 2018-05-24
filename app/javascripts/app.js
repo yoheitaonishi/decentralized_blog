@@ -11,6 +11,8 @@ import metacoin_artifacts from '../../build/contracts/MetaCoin.json'
 // MetaCoin is our usable abstraction, which we'll use through the code below.
 var MetaCoin = contract(metacoin_artifacts);
 
+import "./bind.js";
+
 // The following code is simple to show off interacting with your contracts.
 // As your needs grow you will likely need to change its form and structure.
 // For application bootstrapping, check out window.addEventListener below.
@@ -20,9 +22,11 @@ var account;
 window.App = {
   start: function() {
     var self = this;
+    var test;
 
     // Bootstrap the MetaCoin abstraction for Use.
     MetaCoin.setProvider(web3.currentProvider);
+    self.refreshBlogContent();
 
     // Get the initial account balance so it can be displayed.
     web3.eth.getAccounts(function(err, accs) {
@@ -39,7 +43,6 @@ window.App = {
       accounts = accs;
       account = accounts[0];
 
-      self.refreshBalance();
     });
   },
 
@@ -48,79 +51,79 @@ window.App = {
     status.innerHTML = message;
   },
 
-  refreshBalance: function() {
+  refreshBlogContent: function(blogId) {
     var self = this;
 
     var meta;
     MetaCoin.deployed().then(function(instance) {
       meta = instance;
-      return meta.getBalance.call(account, {from: account});
+      if (blogId == undefined){
+        return false
+      }
+      return meta.getBlog.call(blogId, {from: account});
     }).then(function(value) {
-      //var balance_element = document.getElementById("balance");
-      //balance_element.innerHTML = value.valueOf();
+      if (value != false){
+        var blogContent = value.valueOf();
+        var blogIdElement = document.getElementById("blogIdElement");
+        var writerElement = document.getElementById("writerElement");
+        var titleElement = document.getElementById("titleElement");
+        var bodyElement = document.getElementById("bodyElement");
+        blogIdElement.innerHTML = blogContent[0];
+        writerElement.innerHTML = blogContent[1];
+        titleElement.innerHTML = blogContent[2];
+        bodyElement.innerHTML = blogContent[3];
+      }
     }).catch(function(e) {
       console.log(e);
       self.setStatus("Error getting balance; see log.");
     });
   },
 
-  refreshBlogContent: function() {
-    var self = this;
-
+  // Blog数をgetする
+  getAllBlogs: function() {
     var meta;
     MetaCoin.deployed().then(function(instance) {
       meta = instance;
-      return meta.getBalance.call(account, {from: account});
+      return meta.getBlogsCount.call({from: account});
     }).then(function(value) {
-      //var balance_element = document.getElementById("balance");
-      //balance_element.innerHTML = value.valueOf();
+      console.log(value);
+      return value;
     }).catch(function(e) {
       console.log(e);
-      self.setStatus("Error getting balance; see log.");
+      alert("エラーが発生しました。");
     });
-  },
-
-  sendCoin: function() {
-    var self = this;
-
-    var amount = parseInt(document.getElementById("amount").value);
-    var receiver = document.getElementById("receiver").value;
-
-    this.setStatus("Initiating transaction... (please wait)");
-
-    var meta;
-    MetaCoin.deployed().then(function(instance) {
-      meta = instance;
-      return meta.sendCoin(receiver, amount, {from: account});
-    }).then(function() {
-      self.setStatus("Transaction complete!");
-      self.refreshBalance();
-    }).catch(function(e) {
-      console.log(e);
-      self.setStatus("Error sending coin; see log.");
-    });
-  },
+  }
 
   sendBlog: function() {
+    var self = this;
     var title = document.getElementById("title").value;
     var body = document.getElementById("body").value;
+    var meta;
+    var counter;
 
     this.setStatus("更新中...");
 
-    var self = this;
-    var meta;
-
     MetaCoin.deployed().then(function(instance) {
       meta = instance;
-      return meta.sendBlog(title, body);
-    }).then(function() {
-      self.setStatus("更新完了");
-      self.refreshBalance();
+      return meta.getBlogsCount.call({from: account});
+    }).then(function(blogCount) {
+        counter = blogCount;
+        return meta.sendBlog(counter, title, body, {from: account});
+      }).then(function(value) {
+        self.setStatus("更新完了");
+        meta.getBlogsCount.call({from: account});
+        console.log(value.valueOf());
+        self.refreshBlogContent(counter);
+        // TODO:登録できたコンテンツを表示させる
+      }).catch(function(e) {
+        console.log(e);
+        self.setStatus("更新中にエラーが発生しました");
     }).catch(function(e) {
       console.log(e);
       self.setStatus("更新中にエラーが発生しました");
     });
   }
+
 };
 
 window.addEventListener('load', function() {
