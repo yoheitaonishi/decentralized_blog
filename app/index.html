@@ -1,30 +1,56 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>DAppsブログ</title>
+  <title>DAppLog</title>
   <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
   <link rel="list" href="list.html">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
   <script src="./app.js"></script>
 </head>
 <body>
-  <br>
-    <button id="blog_list_btn" class="btn-list">一覧</button>
-    <button id="blog_create_btn" class="btn-list">ブログを書く</button>
-  </br>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <a  id="blog_list_btn" class="navbar-brand btn-list" href="#">DAppLog</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNavDropdown">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a id="blog_list_btn" class="nav-link btn-list" href="#">ブログ一覧<span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a id="blog_create_btn" class="nav-link btn-list" href="#">ブログ作成</a>
+      </li>
+      <li class="nav-item">
+        <a id="how_to_use_btn" class="nav-link btn-list" href="#">使い方</a>
+      </li>
+    </ul>
+  </div>
+  </nav>
+
+  <div class="container">
+
 
   <!-- ブログ一覧 -->
-  <table id="blog_list">
-  <thead>
+  <div id="blog_list">
+  <h2>ブログ一覧</h2>
+  <table class="table">
+  <thead class="thead-light">
     <tr>
-      <td>ID</td>
-      <td>作成者</td>
-      <td>タイトル</td>
+      <th>ID</th>
+      <th>作成者</th>
+      <th>タイトル</th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
   </tbody>
   </table>
+  </div>
 
   <template id="blog_row">
     <tr>
@@ -33,7 +59,7 @@
       <td></td>
       <td>
       <form action="" onsubmit="return false;">
-        <input type="button" id="" onClick="teston(this);" class="read_button" value="記事を読む">
+        <input type="button" id="" onClick="teston(this);" class="read_button btn btn-outline-primary" value="ブログを読む">
       </form>
       </td>
     </tr>
@@ -43,37 +69,47 @@
 
   <!-- 個別ブログ表示 -->
   <div id="display_blog">
-  <span id="blogIdElement"></span>
-  <span id="writerElement"></span>
-  <br><br>
-  <span id="titleElement"></span>
+  <span></span>
+  <!-- <h2 id="blogIdElement"></h2> -->
+  <h2 id="titleElement"></h2>
+  <span class="writer_label">作成者 </span>
+  <span class="writer_label" id="writerElement"></span>
   <br><br>
   <span id="bodyElement"></span>
   </div>
   <!-- /ブログ表示 -->
 
-  <!-- ブログ登録 -->
+  <!-- ブログ作成 -->
   <div id="blog_create">
-  <br><label for="title">タイトル:</label><input type="text" id="title" placeholder="今日の出来事"></input>
-  <br><label for="body">本文:</label><input type="textarea" id="body" placeholder="今日は非中央集権的な1日だった。"></input>
-  <br><br><button id="send" onclick="App.sendBlog()">公開</button>
+  <h2>ブログ作成</h2>
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text" id="basic-addon1">タイトル</span>
+    </div>
+    <input type="text" class="form-control" aria-describedby="basic-addon1" id="title" placeholder="今日の出来事">
+  </div>
+  <div class="input-group">
+    <div class="input-group-prepend">
+      <span class="input-group-text">本文</span>
+    </div>
+    <textarea class="form-control body_input"  id="body" placeholder="今日は非中央集権的な1日だった。"></textarea>
+  </div>
+  <br><br>
+  <button id="send" class="btn btn-dark" onclick="App.sendBlog()">公開</button>
   <br><br>
   <span id="status"></span>
+  <h2 id="titleCreateElement"></h2>
+  <span id="bodyCreateElement"></span>
   <br><br>
-  <span id="blogIdElement"></span>
-  <span id="writerElement"></span>
-  <br><br>
-  <span id="titleElement"></span>
-  <br><br>
-  <span id="bodyElement"></span>
   </div>
-  <!-- /ブログ登録 -->
+  <!-- /ブログ作成 -->
 
   <!-- 使い方 -->
   <div id="how_to_use">
     test
   </div>
-  <!-- 使い方 -->
+  <!-- /使い方 -->
+  </div>
 
 </body>
 </html>
@@ -83,6 +119,7 @@ function teston(test){
   App.refreshBlogContent(test.id);
   $('#blog_list').hide();
   $('#blog_create').hide();
+  $('#how_to_use').hide();
   $('#display_blog').show();
 }
 </script>

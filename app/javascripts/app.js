@@ -7,7 +7,7 @@ import { default as contract } from 'truffle-contract'
 
 import metacoin_artifacts from '../../build/contracts/MetaCoin.json'
 
-var MetaCoin = contract(metacoin_artifacts);
+var DAppLog= contract(metacoin_artifacts);
 
 var accounts;
 var account;
@@ -15,8 +15,7 @@ var account;
 window.App = {
   start: function() {
     var self = this;
-
-    MetaCoin.setProvider(web3.currentProvider);
+    DAppLog.setProvider(web3.currentProvider);
     self.refreshBlogContent();
 
     web3.eth.getAccounts(function(err, accs) {
@@ -24,12 +23,10 @@ window.App = {
         alert("There was an error fetching your accounts.");
         return;
       }
-
       if (accs.length == 0) {
         alert("Couldn't get any accounts! Make sure your Ethereum client is configured correctly.");
         return;
       }
-
       accounts = accs;
       account = accounts[0];
 
@@ -41,11 +38,11 @@ window.App = {
     status.innerHTML = message;
   },
 
-  refreshBlogContent: function(blogId) {
+  refreshBlogContent: function(blogId, createFlag) {
     var self = this;
 
     var meta;
-    MetaCoin.deployed().then(function(instance) {
+    DAppLog.deployed().then(function(instance) {
       meta = instance;
       if (blogId == undefined){
         return false
@@ -54,12 +51,15 @@ window.App = {
     }).then(function(value) {
       if (value != false){
         var blogContent = value.valueOf();
-        var blogIdElement = document.getElementById("blogIdElement");
-        var writerElement = document.getElementById("writerElement");
-        var titleElement = document.getElementById("titleElement");
-        var bodyElement = document.getElementById("bodyElement");
-        blogIdElement.innerHTML = blogContent[0];
-        writerElement.innerHTML = blogContent[1];
+        if (createFlag == true) {
+          var titleElement = document.getElementById("titleCreateElement");
+          var bodyElement = document.getElementById("bodyCreateElement");
+        } else {
+          var writerElement = document.getElementById("writerElement");
+          writerElement.innerHTML = blogContent[1];
+          var titleElement = document.getElementById("titleElement");
+          var bodyElement = document.getElementById("bodyElement");
+        }
         titleElement.innerHTML = blogContent[2];
         bodyElement.innerHTML = blogContent[3];
       }
@@ -72,39 +72,33 @@ window.App = {
   sendBlog: function() {
     var self = this;
     var title = document.getElementById("title").value;
-    var body = document.getElementById("body").value;
+    var body = document.getElementById("body").value.replace(/\r?\n/g, '<br>');
     var meta;
     var counter;
 
-    this.setStatus("更新中...");
+    this.setStatus("作成中...");
 
-    MetaCoin.deployed().then(function(instance) {
+    DAppLog.deployed().then(function(instance) {
       meta = instance;
       return meta.getBlogsCount.call({from: account});
     }).then(function(blogCount) {
         counter = blogCount;
         return meta.sendBlog(counter, title, body, {from: account});
       }).then(function(value) {
-        self.setStatus("更新完了");
-        meta.getBlogsCount.call({from: account});
-        self.refreshBlogContent(counter);
-        // TODO:登録できたコンテンツを表示させる
+        self.setStatus("作成完了。作成内容は以下の通りです。");
+        self.refreshBlogContent(counter, true);
       }).catch(function(e) {
         console.log(e);
-        self.setStatus("更新中にエラーが発生しました");
+        self.setStatus("作成中にエラーが発生しました");
     }).catch(function(e) {
       console.log(e);
-      self.setStatus("更新中にエラーが発生しました");
+      self.setStatus("作成中にエラーが発生しました");
     });
   },
-
 };
 
-
-
-// Blog数をgetする
 function getBlogsCounter() {
-  MetaCoin.deployed().then(function(instance) {
+  DAppLog.deployed().then(function(instance) {
     return instance.getBlogsCount.call({from: account});
   }).then(function(value){
       var counter = Number(value.valueOf());
@@ -113,7 +107,7 @@ function getBlogsCounter() {
 }
 
 function displayBlogList(blogCounter){
-  MetaCoin.deployed().then(function(instance) {
+  DAppLog.deployed().then(function(instance) {
     for (var i=1; i<blogCounter; i++) {
       instance.getBlog.call(i, {from: account}).then(function(value){
         addBlogAtTable(value);
@@ -137,8 +131,6 @@ function addBlogAtTable(blogArray){
     var tb = document.querySelector("tbody");
     var clone = document.importNode(t.content, true);
     tb.appendChild(clone);
-
-    
   } else {
     // IEはテンプレート見対応
   }
@@ -147,19 +139,16 @@ function addBlogAtTable(blogArray){
 window.addEventListener('load', function() {
   // Checking if Web3 has been injected by the browser (Mist/MetaMask)
   if (typeof web3 !== 'undefined') {
-    console.warn("Using web3 detected from external source. If you find that your accounts don't appear or you have 0 MetaCoin, ensure you've configured that source properly. If using MetaMask, see the following link. Feel free to delete this warning. :) http://truffleframework.com/tutorials/truffle-and-metamask")
+    console.warn("Using web3 detected from external source. :) ")
     // Use Mist/MetaMask's provider
     window.web3 = new Web3(web3.currentProvider);
   } else {
-    console.warn("No web3 detected. Falling back to http://127.0.0.1:9545. You should remove this fallback when you deploy live, as it's inherently insecure. Consider switching to Metamask for development. More info here: http://truffleframework.com/tutorials/truffle-and-metamask");
+    console.warn("No web3 detected. Falling back to http://127.0.0.1:9545. You should remove this fallback when you deploy live, as it's inherently insecure. Consider switching to Metamask for development.");
     // fallback - use your fallback strategy (local node / hosted node + in-dapp id mgmt / fail)
     window.web3 = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:9545"));
   }
-
   App.start();
-
 });
 
-MetaCoin.setProvider(web3.currentProvider);
+DAppLog.setProvider(web3.currentProvider);
 getBlogsCounter();
-

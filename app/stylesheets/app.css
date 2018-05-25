@@ -1,59 +1,28 @@
-body {
-  margin-left: 25%;
-  margin-right: 25%;
-  font-family: "Open Sans", sans-serif;
-}
-
-label {
-  display: inline-block;
-  width: 100px;
-}
-
-input {
-  width: 500px;
-  padding: 5px;
-  font-size: 16px;
-}
-
-button {
-  font-size: 16px;
-  padding: 5px;
-}
-
-h1, h2 {
-  display: inline-block;
-  vertical-align: middle;
-  margin-top: 0px;
-  margin-bottom: 10px;
-}
-
 h2 {
-  color: #AAA;
-  font-size: 32px;
+    margin-top:40px;
+    margin-bottom:40px;
 }
-
-h3 {
-  font-weight: normal;
-  color: #AAA;
-  font-size: 24px;
-}
-
-.black {
-  color: black;
-}
-
-#balance {
-  color: black;
-}
-
-.hint {
-  color: #666;
-}
-
 /* 
 初期表示はブログ一覧とするため、
 ブログ一覧以外は非表示にする
 */
-#blog_display, #blog_create, #blog_edit{
-  display: none;
+#blog_display, #display_blog, #blog_create, #blog_edit, #how_to_use{
+    display: none;
+}
+
+.shortcut {
+    width: 30px; /* 要素の横幅を指定 */
+    white-space: nowrap; /* 横幅のMAXに達しても改行しない */
+    overflow: hidden; /* ハミ出した部分を隠す */
+    text-overflow: ellipsis; /* 「…」と省略 */
+    -webkit-text-overflow: ellipsis; /* Safari */
+    -o-text-overflow: ellipsis; /* Opera */
+}
+
+.body_input {
+    min-height: 400px;
+}
+
+.writer_label {
+    color: gray;
 }
