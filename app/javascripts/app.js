@@ -1,6 +1,6 @@
 import "../stylesheets/app.css";
-import "./display_contents.js"
-import "./blog_list.js"
+import "./menu.js"
+import "./blog_contents.js"
 
 import { default as Web3} from 'web3';
 import { default as contract } from 'truffle-contract'
@@ -130,10 +130,14 @@ function addBlogAtTable(blogArray){
     td[0].textContent = blogArray[0];
     td[1].textContent = blogArray[1];
     td[2].textContent = blogArray[2];
+
+    var read_button = td[3].querySelector("input");
+    read_button.id = Number(blogArray[0]);
   
     var tb = document.querySelector("tbody");
     var clone = document.importNode(t.content, true);
     tb.appendChild(clone);
+
     
   } else {
     // IEはテンプレート見対応
@@ -153,7 +157,9 @@ window.addEventListener('load', function() {
   }
 
   App.start();
+
 });
 
 MetaCoin.setProvider(web3.currentProvider);
 getBlogsCounter();
+

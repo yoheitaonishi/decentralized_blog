@@ -3,7 +3,6 @@ $(function(){
     $('#blog_list').hide();
     $('#blog_create').hide();
     $('#display_blog').hide();
-    $('#display_edit').hide();
     var btnId = this.id;
     if (btnId == 'blog_list_btn') {
       $('#blog_list').show();
