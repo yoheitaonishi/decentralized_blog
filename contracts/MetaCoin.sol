@@ -32,7 +32,7 @@ contract MetaCoin {
         return blogs.length;
     }
 
-    function getBlog(uint index) public constant returns(uint, address, string, string) {
-        return (blogs[index].blogId, blogs[index].writer, blogs[index].title, blogs[index].body);
+    function getBlog(uint index) public constant returns(uint, address, string) {
+        return (blogs[index].blogId, blogs[index].writer, blogs[index].title);
     }
 }

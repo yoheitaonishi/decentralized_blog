@@ -1,34 +1,24 @@
-// Import the page's CSS. Webpack will know what to do with it.
 import "../stylesheets/app.css";
+import "./display_contents.js"
+import "./blog_list.js"
 
-// Import libraries we need.
 import { default as Web3} from 'web3';
 import { default as contract } from 'truffle-contract'
 
-// Import our contract artifacts and turn them into usable abstractions.
 import metacoin_artifacts from '../../build/contracts/MetaCoin.json'
 
-// MetaCoin is our usable abstraction, which we'll use through the code below.
 var MetaCoin = contract(metacoin_artifacts);
 
-import "./bind.js";
-
-// The following code is simple to show off interacting with your contracts.
-// As your needs grow you will likely need to change its form and structure.
-// For application bootstrapping, check out window.addEventListener below.
 var accounts;
 var account;
 
 window.App = {
   start: function() {
     var self = this;
-    var test;
 
-    // Bootstrap the MetaCoin abstraction for Use.
     MetaCoin.setProvider(web3.currentProvider);
     self.refreshBlogContent();
 
-    // Get the initial account balance so it can be displayed.
     web3.eth.getAccounts(function(err, accs) {
       if (err != null) {
         alert("There was an error fetching your accounts.");
@@ -79,21 +69,6 @@ window.App = {
     });
   },
 
-  // Blog数をgetする
-  getAllBlogs: function() {
-    var meta;
-    MetaCoin.deployed().then(function(instance) {
-      meta = instance;
-      return meta.getBlogsCount.call({from: account});
-    }).then(function(value) {
-      console.log(value);
-      return value;
-    }).catch(function(e) {
-      console.log(e);
-      alert("エラーが発生しました。");
-    });
-  }
-
   sendBlog: function() {
     var self = this;
     var title = document.getElementById("title").value;
@@ -112,7 +87,6 @@ window.App = {
       }).then(function(value) {
         self.setStatus("更新完了");
         meta.getBlogsCount.call({from: account});
-        console.log(value.valueOf());
         self.refreshBlogContent(counter);
         // TODO:登録できたコンテンツを表示させる
       }).catch(function(e) {
@@ -122,9 +96,75 @@ window.App = {
       console.log(e);
       self.setStatus("更新中にエラーが発生しました");
     });
-  }
+  },
 
 };
+
+
+
+// Blog数をgetする
+function getBlogsCounter() {
+  MetaCoin.deployed().then(function(instance) {
+    return instance.getBlogsCount.call({from: account});
+  }).then(function(value){
+      var counter = Number(value.valueOf());
+      displayBlogList(counter);
+  });
+}
+
+function displayBlogList(blogCounter){
+  MetaCoin.deployed().then(function(instance) {
+    for (var i=1; i<blogCounter; i++) {
+      instance.getBlog.call(i, {from: account}).then(function(value){
+        addBlogAtTable(value);
+      });
+    }
+  });
+}
+
+function addBlogAtTable(blogArray){
+  // templete 要素の content 属性の有無を確認することで、
+  // ブラウザーが HTML template 要素に対応しているか確認
+  if ('content' in document.createElement('template')) {
+  
+    var t = document.querySelector('#blog_row'),
+    td = t.content.querySelectorAll("td");
+    td[0].textContent = blogArray[0];
+    td[1].textContent = blogArray[1];
+    td[2].textContent = blogArray[2];
+  
+    var tb = document.querySelector("tbody");
+    var clone = document.importNode(t.content, true);
+    tb.appendChild(clone);
+    
+  } else {
+    // IEはテンプレート見対応
+  }
+}
+
+function aaa(){
+  return 123413
+}
+
+// Blog数をgetする
+/*
+getAllBlogs: function() {
+  var meta;
+  MetaCoin.deployed().then(function(instance) {
+    meta = instance;
+    return meta.getBlogsCount.call({from: account});
+  }).then(function(value) {
+    var return_value  = value.valueOf();
+    blog_count = value.valueOf();
+    //console.log(return_value);
+    return return_value;
+  }).catch(function(e) {
+    console.log(e);
+    alert("エラーが発生しました。");
+  });
+},
+*/
+
 
 window.addEventListener('load', function() {
   // Checking if Web3 has been injected by the browser (Mist/MetaMask)
@@ -140,3 +180,7 @@ window.addEventListener('load', function() {
 
   App.start();
 });
+
+MetaCoin.setProvider(web3.currentProvider);
+console.log(aaa());
+getBlogsCounter();
