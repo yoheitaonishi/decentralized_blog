@@ -1,7 +1,6 @@
 body {
   margin-left: 25%;
   margin-right: 25%;
-  margin-top: 10%;
   font-family: "Open Sans", sans-serif;
 }
 
@@ -56,5 +55,5 @@ h3 {
 ブログ一覧以外は非表示にする
 */
 #blog_display, #blog_create, #blog_edit{
-  visibility: hidden;
+  display: none;
 }

@@ -123,8 +123,6 @@ function displayBlogList(blogCounter){
 }
 
 function addBlogAtTable(blogArray){
-  // templete 要素の content 属性の有無を確認することで、
-  // ブラウザーが HTML template 要素に対応しているか確認
   if ('content' in document.createElement('template')) {
   
     var t = document.querySelector('#blog_row'),
@@ -142,30 +140,6 @@ function addBlogAtTable(blogArray){
   }
 }
 
-function aaa(){
-  return 123413
-}
-
-// Blog数をgetする
-/*
-getAllBlogs: function() {
-  var meta;
-  MetaCoin.deployed().then(function(instance) {
-    meta = instance;
-    return meta.getBlogsCount.call({from: account});
-  }).then(function(value) {
-    var return_value  = value.valueOf();
-    blog_count = value.valueOf();
-    //console.log(return_value);
-    return return_value;
-  }).catch(function(e) {
-    console.log(e);
-    alert("エラーが発生しました。");
-  });
-},
-*/
-
-
 window.addEventListener('load', function() {
   // Checking if Web3 has been injected by the browser (Mist/MetaMask)
   if (typeof web3 !== 'undefined') {
@@ -182,5 +156,4 @@ window.addEventListener('load', function() {
 });
 
 MetaCoin.setProvider(web3.currentProvider);
-console.log(aaa());
 getBlogsCounter();
