@@ -38,6 +38,7 @@
   "repository": "https://github.com/yoheitaonishi/decentralized_blog",
   "dependencies": {
     "ganache-cli": "^6.1.0",
-    "solc": "^0.4.24"
+    "solc": "^0.4.24",
+    "truffle-hdwallet-provider": "0.0.5"
   }
 }
