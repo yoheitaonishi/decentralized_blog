@@ -20,16 +20,15 @@ window.App = {
 
     web3.eth.getAccounts(function(err, accs) {
       if (err != null) {
-        alert("There was an error fetching your accounts.");
+        $("#metamask_alert").show();
         return;
       }
       if (accs.length == 0) {
-        alert("Couldn't get any accounts! Make sure your Ethereum client is configured correctly.");
+        $("#metamask_alert").show();
         return;
       }
       accounts = accs;
       account = accounts[0];
-
     });
   },
 
@@ -65,7 +64,7 @@ window.App = {
       }
     }).catch(function(e) {
       console.log(e);
-      self.setStatus("Error getting balance; see log.");
+      self.setStatus("エラーが発生しまています");
     });
   },
 

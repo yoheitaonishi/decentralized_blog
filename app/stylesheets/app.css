@@ -6,7 +6,7 @@ h2 {
 初期表示はブログ一覧とするため、
 ブログ一覧以外は非表示にする
 */
-#blog_display, #display_blog, #blog_create, #blog_edit, #how_to_use{
+#blog_display, #display_blog, #blog_create, #blog_edit, #how_to_use, #metamask_alert{
     display: none;
 }
 
