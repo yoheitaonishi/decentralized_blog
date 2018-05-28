@@ -4,6 +4,7 @@ $(function(){
     $('#blog_create').hide();
     $('#display_blog').hide();
     $('#how_to_use').hide();
+    $('#footer').show();
     var btnId = this.id;
     if (btnId == 'blog_list_btn') {
       $('#blog_list').show();

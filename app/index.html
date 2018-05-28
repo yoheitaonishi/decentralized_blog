@@ -59,7 +59,7 @@
       <td></td>
       <td>
       <form action="" onsubmit="return false;">
-        <input type="button" id="" onClick="teston(this);" class="read_button btn btn-outline-primary" value="ブログを読む">
+        <input type="button" id="" onClick="readBlog(this);" class="read_button btn btn-outline-primary" value="ブログを読む">
       </form>
       </td>
     </tr>
@@ -105,28 +105,60 @@
   <!-- /ブログ作成 -->
 
   <!-- 使い方 -->
-  <div id="how_to_us">
+  <div id="how_to_use">
   <h2>使い方</h2>
   <p>
     ブラウザの拡張機能であるMetaMaskにログインした状態でないとDALog(Decentralized Application bLog)を使うことができません。</br>
     ここではMetaMaskのインストール、ログインまでを解説します！</br>
-    ログインまでの作業時間の目安は5分程度です。
+    ※ ログインまでの作業時間の目安は5分程度です。
   </p>
-  <h3>MetaMaskのインストール</h3>  
-  <h3>MetaMaskにログイン</h3>  
+  </br></br>
+  <h3>MetaMaskのインストールとログイン</h3>  
+  <p>
+    Google Chromeでのインストール方法です。</br>
+    まず検索窓で「MetaMask」と検索して、一番上にChrome ウェブストアが表示されます。</br>
+    </br></br>
+    <img class="img-fluid img-thumbnail" src="app/images/MetaMask_検索結果.png">
+    </br></br>
+    </br>クリックして、拡張機能に追加を押します。</br>
+    </br></br>
+    <img class="img-fluid img-thumbnail" src="app/images/MetaMask_追加.png">
+    </br></br>
+    <p>追加したら拡張機能をクリックして、「Accept」を押します。</p>
+    </br></br>
+    <img class="img-fluid img-thumbnail" src="app/images/MetaMask_拡張機能.png">
+    </br></br>
+    <p>最後にパスワードを設定して、ログインが完了します。</p>
+    </br></br>
+    <img class="img-fluid img-thumbnail" src="app/images/MetaMask_ログイン.png">
+    </br></br>
+    <p>
+      DALogでブログを作成する場合には、Gasが発生するのでMetaMaskのアドレスでETHを送金しておきます。</br>
+      閲覧するのみですと、Gasは発生しません。
+    </p>
+    <p><a href="https://coin-textbook.com/metamask/">仮想通貨の教科書</a>にも詳しく載っているので参考にしてください。</p>
+    </br></br>
+  </p>
   </div>
   <!-- /使い方 -->
   </div>
 
+<footer id="footer" class="footer bg-primary">
+  <div class="container">
+    <span class="text-muted">Place sticky footer content here.</span>
+  </div>
+</footer>
 </body>
 </html>
 
 <script>
-function teston(test){
-  App.refreshBlogContent(test.id);
+function readBlog(blog){
+  App.refreshBlogContent(blog.id);
   $('#blog_list').hide();
   $('#blog_create').hide();
   $('#how_to_use').hide();
+  $('#how_to_use').hide();
+  $('#footer').hide();
   $('#display_blog').show();
 }
 </script>
