@@ -5,9 +5,9 @@ import "./blog_contents.js"
 import { default as Web3} from 'web3';
 import { default as contract } from 'truffle-contract'
 
-import metacoin_artifacts from '../../build/contracts/MetaCoin.json'
+import dalog_artifacts from '../../build/contracts/DALog.json'
 
-var DAppLog= contract(metacoin_artifacts);
+var DAppLog= contract(dalog_artifacts);
 
 var accounts;
 var account;
@@ -140,7 +140,7 @@ window.addEventListener('load', function() {
     console.warn("Using web3 detected from external source. :) ")
     window.web3 = new Web3(web3.currentProvider);
   } else {
-    console.warn("No web3 detected. Falling back to http://127.0.0.1:9545. You should remove this fallback when you deploy live, as it's inherently insecure. Consider switching to Metamask for development.");
+    console.warn("No web3 detected. Falling back to http://127.0.0.1:9545. You should remove this fallback when you deploy live, as it's inherently insecure. Consider switching to DALog for development.");
     window.web3 = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:9545"));
   }
   App.start();

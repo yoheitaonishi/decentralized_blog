@@ -2,7 +2,7 @@ pragma solidity ^0.4.17;
 
 import "./ConvertLib.sol";
 
-contract MetaCoin {
+contract DALog {
     struct Blog {
         uint blogId;
         address writer;
@@ -11,12 +11,6 @@ contract MetaCoin {
     }
 
     Blog[] public blogs;
-
-    mapping (address => uint) balances;
-
-	function MetaCoin() public {
-		balances[tx.origin] = 10000;
-	}
 
     function sendBlog(uint _blogId, string _title, string _body) public returns(bool) {
         blogs.push(Blog({
